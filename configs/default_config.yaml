@@ -1,0 +1,54 @@
+# Default configuration for music genre classification
+
+# Random seed for reproducibility
+seed: 42
+
+# Data paths
+data:
+  dataset_path: "Data/genres_original"
+  features_csv: "Data/features_30_sec.csv"
+  metadata_path: "gtzan_metadata.csv"
+  segments_json: "data_segments.json"
+  sample_dataset_size: 100  # For sample dataset creation
+
+# Model hyperparameters
+model:
+  latent_dim: 512
+  num_genres: 10
+  model_type: "autoencoder_classifier"  # Options: "autoencoder_classifier", "crnn"
+
+# Training hyperparameters
+training:
+  batch_size: 32
+  num_workers: 4
+  
+  # Autoencoder training
+  ae:
+    epochs: 50
+    learning_rate: 0.001
+    patience: 10
+  
+  # Classifier training - Phase 1 (frozen encoder)
+  phase1:
+    epochs: 30
+    learning_rate: 0.001
+    freeze_encoder: true
+    patience: 15
+  
+  # Classifier training - Phase 2 (fine-tuning)
+  phase2:
+    epochs: 50
+    learning_rate: 0.00005
+    freeze_encoder: false
+    patience: 15
+
+# Paths
+paths:
+  checkpoints_dir: "results/checkpoints"
+  plots_dir: "results/plots"
+  logs_dir: "results/logs"
+  metrics_dir: "results/metrics"
+
+# Device
+device: "cuda"  # Options: "cuda", "cpu", "auto"
+
